@@ -43,3 +43,38 @@ by Ian Goodfellow and Nicolas Papernot
 
 对抗样本之所以这么难以防御，是因为很难位对抗样本的制作过程来构造一个理论模型。对抗样本是许多机器学习模型（包括神经网络）中的非线性和非凸的优化问题的一组解。因为我们没有好的理论工具来描述这些复杂优化问题的解，所以也很在哪种防御手段能有效的解决对抗样本上做任何理论论证。
 
+从另一个角度来说，对抗样本之所以难以防御是因为这要求机器模型在任何可能的输入下都产生准确的输出。然而大部分时候，机器学习模型只在少量的它们考虑到的可能的输入下表现得好。
+
+由于存在巨量的各种可能的输入，设计一个真正能够 **自适应** 的防御就成了一件非常难的事。
+
+## 其他的攻防情景
+
+许多其他的针对机器学习的攻击也是难以防御的。在过去中，我们主要聚焦在测试时的输入从而来糊弄一个机器学习模型，但是也有许多其他可能的攻击，比如偷偷修改训练集，让模型按照攻击者训练成他想要的方式。
+
+一个对抗机器学习中的新星是差分隐私，在这个领域上我们真的有理论上的论断可以说训练算法可以避免攻击者从一个训练好的模型的训练集中恢复出敏感信息。
+
+把机器学习和其他情景下共有的一些攻防手段是一件有趣的事。
+
+在密码学中，防御这看起来更占优势一些。给定一些合理的假设，比如加密算法已经被正确地实现，防御者可以可靠的发送一个消息而攻击者不能解密。
+
+在物理的碰撞中，攻击者似乎更有优势。建造核弹要比建造能抵御核弹的城市简单多了。热力学第二定律表明，如果防御者需要把熵维持在某个阀值一下，那么即使没有攻击者来故意把熵增加，随着时间带来的熵增，防御者也会失败。
+
+监督学习中的「没有免费的午餐」定理 [W96] 表明，当平均到所有可能的数据集上的时候，没有一种机器学习算法在测试的时候能在一个新的数据上表现的比其他算法更好。乍一看，似乎表示所有的算法都很容易受对抗样本的干扰。然而，「没有免费的午餐」定理只在我们不对问题的结构做任何假设的情况下成立。当我们研究对抗样本的时候，我们做了小绕动不应该改变输出类别的分类这个假设，因此典型的「没有免费的午餐」定理在此不适用。
+
+面对攻击者时的鲁棒性和在干净的数据下的稳定性二者间存在一种相互拉扯的关系，严谨地探索这种关系是一个活跃的研究问题。在 [PMS16] 中，第一个针对机器学习中对抗样本的「没有免费的午餐」订立表明，只要模型是从有限的数据中学习得来，这种拉扯关系就存在。结果表明，防御可以通过寻找更丰富的假设类来抵御对抗样本。然而，在这没有合适的数据和能够学习到高可信度的模型的学习算法的挑战下，这又造成了新的拉扯。
+
+## 结论
+
+对对抗样本的研究是非常令人振奋的，因为许多最重要的问题仍待解决，在理论和应用上都是如此。在理论那边，没有一个人知道是否一个能抵御对抗样本的防御是在理论是没戏的（就像尝试去找一个通用的机器学习算法）或者一个优化策略能给防御者一个上界（像在密码学和差分隐私中那样）。在应用那边，没有一个人能设计出一个真正有效的抵御算法能抵御广泛的对抗样本攻击算法。我们希望我们的读者能够从这受到鼓舞从而去解决这样的一些问题。
+
+## 引用
+
+- [BNL12] Biggio, B., Nelson, B., & Laskov, P. (2012). Poisoning attacks against support vector machines. arXiv preprint arXiv:1206.6389.
+- [GSS14] Goodfellow, I. J., Shlens, J., & Szegedy, C. (2014). Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572.
+- [HVD15] Hinton, Geoffrey, Oriol Vinyals, and Jeff Dean. “Distilling the knowledge in a neural network.” arXiv preprint arXiv:1503.02531 (2015).
+- [PM16] Papernot, N., & McDaniel, P. (2016). On the effectiveness of defensive distillation. arXiv preprint arXiv:1607.05113.
+- [PMG16] Papernot, N., McDaniel, P., Goodfellow, I., Jha, S., Berkay Celik, Z., & Swami, A. (2016). Practical Black-Box Attacks against Deep Learning Systems using Adversarial Examples. arXiv prep[W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural Computation arXiv:1602.02697.
+- [PMS16] Papernot, [W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural ComputationMcDaniel, P., Sinha, A., & Wellman, M. (2016). Towards the Science of Security [W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural ComputationPrivacy in Machine Learning. arXiv preprint arXiv:1611.03814.
+- [PMW16] Papernot, [W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural ComputationMcDaniel, P., Wu, X., Jha, S., & Swami, A. (2016, May). Distillation as a de[W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural Computatione to adversarial perturbations against deep neural networks. In the 2016 IEEE Symposium on Security and Privacy (pp. 582-597).
+- [SZS13] Szegedy, C., Zaremba, W., Sutskever, I., Bruna, J., Erhan, D., Goodfellow, I., & Fergus, R. (2013). Intriguing properties of neural networks. arXiv preprint arXiv:1312.6199.
+- [W96] Wolpert, David H. (1996). The lack of a priori distinction between learning algorithms. Neural Computation

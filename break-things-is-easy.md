@@ -55,7 +55,7 @@ by Nicolas Papernot and Ian Goodfellow
 
 谢谢 Ryan Sheatsley 和 Vincent Tjeng 指出一处拼写错误。
 
-## 引用
+## 参考文献
 
 - [AMS15] Ateniese, G., Mancini, L. V., Spognardi, A., Villani, A., Vitali, D., & Felici, G. (2015). Hacking smart machines with smarter ones: How to extract meaningful data from machine learning classifiers. International Journal of Security and Networks, 10(3), 137-150.
 - [BS16] Barocas, S., & Selbst, A. D. (2016). Big data’s disparate impact. California Law Review, 104.

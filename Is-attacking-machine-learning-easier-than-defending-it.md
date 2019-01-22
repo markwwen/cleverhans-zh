@@ -67,7 +67,7 @@ by Ian Goodfellow and Nicolas Papernot
 
 对对抗样本的研究是非常令人振奋的，因为许多最重要的问题仍待解决，在理论和应用上都是如此。在理论那边，没有一个人知道是否一个能抵御对抗样本的防御是在理论是没戏的（就像尝试去找一个通用的机器学习算法）或者一个优化策略能给防御者一个上界（像在密码学和差分隐私中那样）。在应用那边，没有一个人能设计出一个真正有效的抵御算法能抵御广泛的对抗样本攻击算法。我们希望我们的读者能够从这受到鼓舞从而去解决这样的一些问题。
 
-## 引用
+## 参考文献
 
 - [BNL12] Biggio, B., Nelson, B., & Laskov, P. (2012). Poisoning attacks against support vector machines. arXiv preprint arXiv:1206.6389.
 - [GSS14] Goodfellow, I. J., Shlens, J., & Szegedy, C. (2014). Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572.

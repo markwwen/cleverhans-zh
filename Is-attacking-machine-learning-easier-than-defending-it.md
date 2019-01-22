@@ -1,6 +1,7 @@
 # Is attacking machine learning easier than defending it?
 
 Feb 15, 2017
+
 by Ian Goodfellow and Nicolas Papernot
 
 在我们的第一篇博文中，我们展现了一些攻击者可以用来破坏现有的机器学习系统的方法，比如用学习算法 [BNL12] 在训练集中投毒，或者制造对抗样本来使模型做出错误的预测 [SZS13]。在这篇博文中，我们会拿对抗样本做例子，来说明为什么攻击机器学习看起来要比防御更简单。换句话说，我们会细致地介绍一些为什么我们仍然不能完全有效地防御对抗样本的原因，以及我们是否真的能奢求这样地防御。

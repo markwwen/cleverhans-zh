@@ -1,6 +1,7 @@
 # The challenge of verification and testing of machine learning
 
 Jun 14, 2017
+
 by Ian Goodfellow and Nicolas Papernot
 
 在我们的第二篇博文中，我们给了一些背景来解释为什么攻击机器学习通常要比防御来得简单。我们看到了一些为什么我们仍然不能完全有效的防御对抗样本的理由，我们也在想，这样的一种防御是否真的存在。

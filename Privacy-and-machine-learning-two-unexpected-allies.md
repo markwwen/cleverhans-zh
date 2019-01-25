@@ -40,5 +40,5 @@ by Nicolas Papernot and Ian Goodfellow
 ![pate-aggregation](img/pate-aggregation.png)
 
 为了说的更清楚些，我们用一个二分类的医疗诊断任务来阐述聚合的过程，不过我们把此机制扩展到更多的类上。现在，我们来分析一下如果 Jane Smith 有癌症的话，这个机制输出的结果。红色的模型代表的是唯一的在有 Jane Smith 数据上训练出来的教师模型，它现在学习到了将和 Jane 相似的记录判断为患有癌症的患者，（对比上一张图）现在的结果是它现在把和 Jane 相似的测试输入改成了「换癌症」。现在有两个教师模型投给「患癌症」了而剩下的两个模型投给了「健康」。在这个设定下，添加到两个投票总数中的随机噪声，可以防止聚类的结果反映任何个体教师的投票情况，从而保护了隐私：加噪聚合输出等可能的是「健康」和「患癌症」。
-![pate-aggregation](img/pate-aggregation.png)
+![pate-aggregation](img/pate-aggregation.gif)
 

@@ -1,4 +1,4 @@
-# Cleverhans-zh
+# cleverhans-zh
 
 This project is a Chinese translation to the blog of [cleverhans](http://www.cleverhans.io/), whcih is about security and privacy in machine learning and maintained by Ian Goodfellow and Nicolas Papernot.
 

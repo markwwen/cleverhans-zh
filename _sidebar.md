@@ -1,0 +1,5 @@
+- post
+  - [Breaking things is easy](post/break-things-is-easy.md)
+  - [Is attacking machine learning easier than defending it?](post/Is-attacking-machine-learning-easier-than-defending-it.md)
+  - [The challenge of verification and testing of machine learning](post/The-challenge-of-verification-and-testing-of-machine-learning.md)
+  - [Privacy and machine learning: two unexpected allies?](post/Privacy-and-machine-learning-two-unexpected-allies.md)

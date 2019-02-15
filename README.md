@@ -1,4 +1,4 @@
-# cleverhans-zh
+# Cleverhans-zh
 
 This project is a Chinese translation to the blog of [cleverhans](http://www.cleverhans.io/), whcih is about security and privacy in machine learning and maintained by Ian Goodfellow and Nicolas Papernot.
 
@@ -6,7 +6,7 @@ This project is a Chinese translation to the blog of [cleverhans](http://www.cle
 
 ## Table of Contents
 
-- [Breaking things is easy](./break-things-is-easy.md)
-- [Is attacking machine learning easier than defending it?](./Is-attacking-machine-learning-easier-than-defending-it.md)
-- [The challenge of verification and testing of machine learning](./The-challenge-of-verification-and-testing-of-machine-learning.md)
-- [Privacy and machine learning: two unexpected allies?](./Privacy-and-machine-learning-two-unexpected-allies.md)
+- [Breaking things is easy](./post/break-things-is-easy.md)
+- [Is attacking machine learning easier than defending it?](./post/Is-attacking-machine-learning-easier-than-defending-it.md)
+- [The challenge of verification and testing of machine learning](./post/The-challenge-of-verification-and-testing-of-machine-learning.md)
+- [Privacy and machine learning: two unexpected allies?](./post/Privacy-and-machine-learning-two-unexpected-allies.md)

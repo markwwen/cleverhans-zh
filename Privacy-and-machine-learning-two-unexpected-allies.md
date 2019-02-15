@@ -61,4 +61,77 @@ by Nicolas Papernot and Ian Goodfellow
 ![pate-confident](img/pate-confident.png)
 
 在引用中，这意味着我们的 privacy budget 用于两件事情：选择和回答查询。然而，我们选择回答的查询的特点是教师之间达成了高共识度，因此回答这些问题所需的 privacy budget 很少。换句话说，我们可以把 Confident Aggregator 看出是一种机制，它能够过滤掉在原来的机制中消耗了大量 privacy budget 的查询，因此，在学生模型表现水平一致的情况下，Confident Aggregator 提供的总的 privacy budget 小于原来的加噪聚合机制的 privacy budget。下图可视化了这种改进，其用的是原来机制（Simple GNMax）和精准机制（Confident GNMax）在数据独立（data-dep）分析的时候，（学生模型）查询被回答的数量，其中我们应用了 Moments Accountant 或者 Renyi Differential Privacy.
+![pate-confident-analysis](img/pate-confident-analysis.png)
 
+## 机器学习研究员怎么才能为 PATE 制作提高的模型呢？
+
+有两个主要隐私影响着我们的方法提供的隐私保障的强度：
+
+1. 教师模型直接的共识度：当这种共识很强，意味着几乎所有教师都做出一样的标签预测的时候，输出相应的标签所花的 privacy budget 就会减少。这直观的对应这样的一个场景：所作出的预测是所有教师学习到的一般性的东西，即使他们在不相交的数据集上训练。
+
+2. 学生模型查询的数量：在训练期间学生模型每一次向教师发出标签查询的时候，教师生成这个标签的 budget 都会被计算到总的隐私开销上。因此，在训练中尽可能少的教师模型查询能够加强所提供的隐私保障。
+
+这两点都可以从纯粹的机器学习的角度上来解决。加强教师模型之间的共识度需要一个东西能够训练许多教师模型而每个又只需要一点数据。提高这些模型个体的准确性和泛化性很可能可以提高共识度。和全监督的教师模型训练不同，减少学生模型的查询数是一个半监督训练的问题。例如，MNIST 和 SVHN 上最好的隐私保护的模型是由 GATE-G 训练的，其是使用半监督式的生成对抗网络来训练学生模型的框架的变体。学生可以访问相对较多的未标记输入，并在尽可能少的教师模型监督下进行学习。
+
+为了促进这些努力，PATE 框架是开源的，可以作为 Tensorflow 模型库的一部分来使用。方便起见，代码使用了公开可用的图像分类数据集，比如 MNIST 和 SVHN。你可以把它们 clone 下并在 UNIX 的机子上设置如下对应的 PYTHONPATH 变量：
+
+```
+cd
+git clone https://github.com/tensorflow/models
+cd models
+export PYTHONPATH=$(pwd):$PYTHONPATH
+cd research/differential_privacy/multiple_teachers
+```
+
+PATE 的第一步是训练教师模型，在这个 demo 中，我们使用 MNIST 数据集和 250 个教师模型的聚合（请参靠 PATE 的论文中的讨论为啥这是一个好的选择）。
+
+```
+python train_teachers.py --nb_teachers=250 --teacher_id=0 --dataset=mnist
+python train_teachers.py --nb_teachers=250 --teacher_id=1 --dataset=mnist
+...
+python train_teachers.py --nb_teachers=250 --teacher_id=248 --dataset=mnist
+python train_teachers.py --nb_teachers=250 --teacher_id=249 --dataset=mnist
+```
+
+这会保存 250 个教师模型的检查点。现在，我们可以加载这些教师模型并应用聚合机制来监督学生模型训练。
+
+```
+python train_student.py --nb_teachers=250 --dataset=mnist --stdnt_share=1000 --lap_scale=20 --save_labels=True
+```
+
+这会使用我们 250 个教师模型标注的前 1000 个样输入，和引入 1/20 尺度的拉普拉斯噪声的聚合机制来训练学生模型。这会保存一个叫 ```/tmp/mnist_250_student_clean_votes_lap_20.npy``` 的文件，其包括所有教师模型产生的标签，我们用它来评估学生的私密度。
+
+要了解我们学生模型所提供的差分隐私的 bound 的值，我们需要运行分析脚本。这会使用在训练学生模型的时候，关于教师共识度的信息来做隐私分析。这里，noise_eps 参数应该设置为 2/lap_scale。
+
+```
+python analysis.py --counts_file=/tmp/mnist_250_student_clean_votes_lap_20.npy --max_examples=1000 --delta=1e-5 --noise_eps=0.1 --input_is_counts
+```
+
+这个设置用原始的噪声聚合机制复现了 PATE 的框架。有兴趣使用我们最近论文中介绍的 Confident Agggregator 机制的读者可以在[此处](https://github.com/tensorflow/models/tree/master/research/differential_privacy/pate)找到相关的代码。
+
+### 更多 PATE 的资源
+
+- [原来的 PATE 论文](https://arxiv.org/abs/1610.05755) 发表在 ICLR 2017 并记录在 ICLR 的[口头报告](https://www.youtube.com/watch?v=bDayquwDgjU)中
+- [ICLR 2018 的论文](https://arxiv.org/abs/1802.08908) 在大数目的类别和不平衡数据上的 scaling PATE
+- GitHub 上 [PATE 的代码仓库](https://github.com/tensorflow/models/tree/master/research/differential_privacy/multiple_teachers)
+- GitHub 上 [PATE 的精准隐私分析的代码仓库](https://github.com/tensorflow/models/tree/master/research/differential_privacy/pate)
+
+## 结论
+
+隐私可以被看成是机器学习设定下的盟友而不是敌人。随着技术的进步，差分隐私很可能成为制造更好的模型的有效的规范。在 PATE 的框架内，机器学习研究人员也可以为改善差分隐私保障作出重大贡献，而不需要成为这些保障上形式分析的专家。
+
+## 致谢
+
+谢谢我们的合作者对本文中提供的材料的贡献。特别感谢 Ilya Mironov 和 Úlfar Erlingsson 对本文草稿的反馈。
+
+## 参考文献
+
+- [ACG16] Abadi, M., Chu, A., Goodfellow, I., McMahan, H. B., Mironov, I., Talwar, K., & Zhang, L. (2016, October). Deep learning with differential privacy. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (pp. 308-318). ACM.
+
+- [DMNS06] Dwork, C., McSherry, F., Nissim, K., & Smith, A. (2006, March). Calibrating noise to sensitivity in private data analysis. In Theory of Cryptography Conference (pp. 265-284). Springer, Berlin, Heidelberg.
+
+- [M17] Mironov, I. (2017, August). Renyi differential privacy. In Computer Security Foundations Symposium (CSF), 2017 IEEE 30th (pp. 263-275). IEEE.
+
+- [NS08] Narayanan, A., & Shmatikov, V. (2008, May). Robust de-anonymization of large sparse datasets. In Security and Privacy, 2008. SP 2008. IEEE Symposium on (pp. 111-125). IEEE.
+
+- [SSS17] Shokri, R., Stronati, M., Song, C., & Shmatikov, V. (2017, May). Membership inference attacks against machine learning models. In Security and Privacy (SP), 2017 IEEE Symposium on (pp. 3-18). IEEE.

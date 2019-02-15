@@ -9,3 +9,4 @@ This project is a Chinese translation to the blog of [cleverhans](http://www.cle
 - [Breaking things is easy](./break-things-is-easy.md)
 - [Is attacking machine learning easier than defending it?](./Is-attacking-machine-learning-easier-than-defending-it.md)
 - [The challenge of verification and testing of machine learning](./The-challenge-of-verification-and-testing-of-machine-learning.md)
+- [Privacy and machine learning: two unexpected allies?](./Privacy-and-machine-learning-two-unexpected-allies.md)
